@@ -7,6 +7,16 @@ import argparse
 
 KEYWORDS = [
     "Faecal Microbiota Transplantation",
+    "Fecal Microbiota Transplantation",
+    "Fecal Microbiota Transplant",
+    "Faecal Microbiota Transplant",
+    "Fecal Microbiota",
+    "Faecal Microbiota",
+    "Fecal Microbiome",
+    "Faecal Microbiome",
+    "Faecal",
+    "Fecal",
+    "FMT",
 ]
 
 
@@ -115,8 +125,8 @@ def main():
     parser.add_argument('-e', '--email', help='Email address', required=True)
     parser.add_argument('-k', '--keywords', help='Keywords to search', required=False, default=KEYWORDS)
     parser.add_argument('-m', '--max_results', help='Max results', required=False, default=10000000)
-    parser.add_argument('-f', '--from_date', help='From date', required=True)
-    parser.add_argument('-t', '--to_date', help='To date', required=True)
+    parser.add_argument('-f', '--from_date', help='From date (YYYY/MM/DD)', required=True)
+    parser.add_argument('-t', '--to_date', help='To date (YYYY/MM/DD)', required=True)
     parser.add_argument('-o', '--output', help="Path to output file", required=False,
                         default="output-from_date-to_date.csv")
     parser.add_argument('--failed', help="Path to file with failed IDs", required=False,
@@ -141,8 +151,10 @@ def main():
 
     with open(output_file, 'w') as f:
         writer = csv.writer(f)
+        writer.writerow(["study_id", "desc", "url"])
         for key, value in bioproject_accessions.items():
-            writer.writerow([key, value])
+            url = f"https://www.ncbi.nlm.nih.gov/bioproject/{key}"
+            writer.writerow([key, value, url])
 
     failed_file = args.failed
     if failed_file == "failed-from_date-to_date.csv":
